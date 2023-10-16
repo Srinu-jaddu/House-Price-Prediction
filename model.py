@@ -42,6 +42,17 @@ def gradient_descent(x, y, w_in, b_in, alpha, no_ite, compute_cost, compute_grad
             print(f"iteration {i} -- cost: {j_hist[i]}")
     return w, b, j_hist
 
+
+#R2 Error
+def r2_score(y_train, y_pred):
+    y_mean = np.mean(y_train)
+    ss_tot = np.sum((y_train - y_mean) ** 2)
+    ss_res = np.sum((y_train - y_pred) ** 2)
+    r2 = 1 - (ss_res / ss_tot)
+    return r2
+
+        
+
 # Example data
 x_train = np.array([[10.0, 2.0, 3.0, 4.0],
                    [20.0, 4.0, 6.0, 8.0],
@@ -59,7 +70,7 @@ alpha = 0.001
 
 # Run gradient descent
 w_final, b_final, J_hist = gradient_descent(x_train, y_train, initial_w, initial_b, alpha, iterations, compute_cost, compute_gradient)
-print(f"b, w found by gradient descent: {b_final:.2f}, {w_final}")
+print(f"b, w found by gradient descent: {b_final:.2f}, {w_final}\n")
 
 
 #Prediction 
@@ -67,24 +78,11 @@ pred_y = []
 for i in range(len(x_train)):
     s = np.dot(x_train[i],w_final) + b_final
     pred_y.append(s)
-    print(f"Prediction {s} Actual Value {y_train[i]}")
+    print(f"Prediction {s} Actual Value {y_train[i]}\n")
 
-
-#Visualise 
-x_feauture = ["area","bedrooms","bathrooms","stores"]
-fig, ax = plt.subplots(1, 4, figsize=(20, 5))
-for i in range(len(x_t[0])):  # Iterate up to the number of columns in x_t
-    ax[i].scatter(x_t[:, i], y_t, c="green")
-    ax[i].set_xlabel(x_feature[i], color="red", fontsize=20)  # Fixed typo x_feauture -> x_feature
-ax[0].set_ylabel("price", color="red", fontsize=20)
-plt.suptitle("Multiple Regression\n", color="red", fontsize=20)
-
-x_feauture = ["area","bedrooms","bathrooms","stores"]
-fig, ax = plt.subplots(1, 4, figsize=(20, 5))
-for i in range(len(x_t[0])):  # Iterate up to the number of columns in x_t
-    ax[i].scatter(x_t[:, i], pred_y, c="green")
-    ax[i].set_xlabel(x_feature[i], color="red", fontsize=20)  # Fixed typo x_feauture -> x_feature
-ax[0].set_ylabel("price", color="red", fontsize=20)
-plt.suptitle("Predicted Multiple Regression\n", color="red", fontsize=20)
-plt.show()
+#Accuracy 
+print(f"R2 Score accuracy : {r2square(y_train,pred_y)}")
+        
+        
+    
 
